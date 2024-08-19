@@ -74,3 +74,79 @@ def create_random_image(size=(100, 100)):
     data = np.random.rand(size[0], size[1], 3) * 255
     image = Image.fromarray(data.astype('uint8'), 'RGB')
     return image
+
+def image_statistics(img):
+    """Calculate basic statistics for an image."""
+    np_img = np.array(img)
+    mean = np_img.mean(axis=(0, 1))
+    stddev = np_img.std(axis=(0, 1))
+    min_val = np_img.min(axis=(0, 1))
+    max_val = np_img.max(axis=(0, 1))
+    return {
+        'mean': mean,
+        'stddev': stddev,
+        'min': min_val,
+        'max': max_val
+    }
+
+def plot_image_statistics(stats, output_filename='image_statistics.png'):
+    """Plot the statistics of an image."""
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    categories = ['Mean', 'Stddev', 'Min', 'Max']
+    for idx, (key, value) in enumerate(stats.items()):
+        ax.plot(value, label=f'{categories[idx]} R', color='red', linestyle='--')
+        ax.plot(value, label=f'{categories[idx]} G', color='green', linestyle='--')
+        ax.plot(value, label=f'{categories[idx]} B', color='blue', linestyle='--')
+    ax.set_title('Image Color Statistics')
+    ax.set_xlabel('Channel')
+    ax.set_ylabel('Value')
+    ax.legend()
+    plt.savefig(output_filename)
+    plt.close()
+
+def add_noise_to_image(img, noise_level=25):
+    """Add random noise to an image."""
+    np_img = np.array(img)
+    noise = np.random.normal(0, noise_level, np_img.shape).astype('uint8')
+    noisy_img = Image.fromarray(np.clip(np_img + noise, 0, 255).astype('uint8'), 'RGB')
+    return noisy_img
+
+def apply_sepia_filter(img):
+    """Apply a sepia filter to an image."""
+    np_img = np.array(img)
+    sepia_filter = np.array([[0.272, 0.534, 0.131],
+                             [0.349, 0.686, 0.168],
+                             [0.393, 0.769, 0.189]])
+    sepia_img = np.dot(np_img[...,:3], sepia_filter.T)
+    sepia_img = np.clip(sepia_img, 0, 255).astype('uint8')
+    return Image.fromarray(sepia_img, 'RGB')
+
+def apply_grayscale_filter(img):
+    """Convert an image to grayscale."""
+    return img.convert('L')
+
+def create_pattern_image(size=(100, 100), pattern_type='checkerboard'):
+    """Create a pattern image."""
+    np_img = np.zeros((size[0], size[1], 3), dtype='uint8')
+    if pattern_type == 'checkerboard':
+        block_size = 10
+        for i in range(0, size[0], block_size):
+            for j in range(0, size[1], block_size):
+                if (i // block_size) % 2 == (j // block_size) % 2:
+                    np_img[i:i+block_size, j:j+block_size] = [255, 255, 255]
+    return Image.fromarray(np_img, 'RGB')
+
+def save_histogram(img, filename='histogram.png'):
+    """Save histogram of an image."""
+    np_img = np.array(img)
+    r_hist, g_hist, b_hist = np_img[..., 0].flatten(), np_img[..., 1].flatten(), np_img[..., 2].flatten()
+    plt.figure(figsize=(10, 6))
+    plt.hist(r_hist, bins=256, color='red', alpha=0.6, label='Red')
+    plt.hist(g_hist, bins=256, color='green', alpha=0.6, label='Green')
+    plt.hist(b_hist, bins=256, color='blue', alpha=0.6, label='Blue')
+    plt.title('Image Histogram')
+    plt.xlabel('Pixel Value')
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.savefig(filename)
+    plt.close()
