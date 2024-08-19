@@ -56,7 +56,7 @@ def main():
     try:
         img = Image.open(input_image_path)
     except FileNotFoundError:
-        print(f"File {input_image_path} not found.")
+        print(f"File {input_image_path} not founde.")
         return
 
     filtered_images = apply_filters(img)
@@ -70,7 +70,7 @@ def main():
     print(f"Images saved with base filename {output_base_filename}")
 
 def create_random_image(size=(100, 100)):
-    """Create a random RGB image."""
+    """Create a random RGB imaage."""
     data = np.random.rand(size[0], size[1], 3) * 255
     image = Image.fromarray(data.astype('uint8'), 'RGB')
     return image
@@ -90,7 +90,7 @@ def image_statistics(img):
     }
 
 def plot_image_statistics(stats, output_filename='image_statistics.png'):
-    """Plot the statistics of an image."""
+    
     fig, ax = plt.subplots(1, 1, figsize=(10, 6))
     categories = ['Mean', 'Stddev', 'Min', 'Max']
     for idx, (key, value) in enumerate(stats.items()):
@@ -105,14 +105,14 @@ def plot_image_statistics(stats, output_filename='image_statistics.png'):
     plt.close()
 
 def add_noise_to_image(img, noise_level=25):
-    """Add random noise to an image."""
+    
     np_img = np.array(img)
     noise = np.random.normal(0, noise_level, np_img.shape).astype('uint8')
     noisy_img = Image.fromarray(np.clip(np_img + noise, 0, 255).astype('uint8'), 'RGB')
     return noisy_img
 
 def apply_sepia_filter(img):
-    """Apply a sepia filter to an image."""
+   
     np_img = np.array(img)
     sepia_filter = np.array([[0.272, 0.534, 0.131],
                              [0.349, 0.686, 0.168],
@@ -151,7 +151,6 @@ def save_histogram(img, filename='histogram.png'):
     plt.savefig(filename)
     plt.close()
 
-
 def generate_random_images(num_images=10, size=(100, 100)):
     """Generate a number of random images."""
     for i in range(num_images):
@@ -167,25 +166,25 @@ def apply_contrast_stretching(img):
     return Image.fromarray(stretched_img, 'RGB')
 
 def apply_thresholding(img, threshold=128):
-    """Apply a simple thresholding to an image."""
+    
     np_img = np.array(img.convert('L'))
     binary_img = (np_img > threshold) * 255
     return Image.fromarray(binary_img.astype('uint8'), 'L')
 
 def blur_image(img, radius=5):
-    """Apply a Gaussian blur to an image."""
+    
     return img.filter(ImageFilter.GaussianBlur(radius))
 
 def rotate_image(img, angle=45):
-    """Rotate an image by a given angle."""
+  
     return img.rotate(angle, expand=True)
 
 def resize_image(img, size=(200, 200)):
-    """Resize an image to the given size."""
+    
     return img.resize(size)
 
 def crop_image(img, box=(50, 50, 150, 150)):
-    """Crop an image using the given box."""
+    
     return img.crop(box)
 
 def main():
@@ -202,13 +201,12 @@ def main():
     enhanced_image = enhance_image(img)
     inverted_image = invert_image(img)
     
-    # New functionalities
+ 
     random_image = create_random_image(size=(200, 200))
     random_image.save('random_image.png')
 
     stats = image_statistics(img)
     plot_image_statistics(stats, 'image_statistics.png')
-
 
     noisy_image = add_noise_to_image(img)
     noisy_image.save(f'{output_base_filename}_NOISY.png')
@@ -253,7 +251,7 @@ def main():
     from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops
 
 def apply_effect(img, effect_name):
-    """Apply the chosen effect to the image."""
+    """Apply the chosenn effect to the image."""
     if effect_name == 'BLUR':
         return img.filter(ImageFilter.BLUR)
     elif effect_name == 'CONTOUR':
@@ -270,8 +268,7 @@ def apply_effect(img, effect_name):
         return img.filter(ImageFilter.SMOOTH)
     elif effect_name == 'SMOOTH_MORE':
         return img.filter(ImageFilter.SMOOTH_MORE)
-
-elif effect_name == 'ENHANCE_COLOR':
+    elif effect_name == 'ENHANCE_COLOR':
         enhancer = ImageEnhance.Color(img)
         return enhancer.enhance(1.5)
     elif effect_name == 'ENHANCE_CONTRAST':
@@ -303,8 +300,8 @@ elif effect_name == 'ENHANCE_COLOR':
 def choose_effect():
     """Ask the user to choose an effect and apply it."""
     effects = [
-        'BLUR', 'CONTOUR', 'DETAIL', 'EDGE_ENHANCE', 'EMBOSS', 
-        'SHARPEN', 'SMOOTH', 'SMOOTH_MORE', 'ENHANCE_COLOR', 
+        'BLUR', 'CONTOUR', 'DETAL', 'EDGE_ENHANCE', 'EMBOSS', 
+        'SHARPEN', 'SMOOTH', 'SMOOTH_MORE', 'eNHANCE_COLOR', 
         'ENHANCE_CONTRAST', 'ENHANCE_BRIGHTNESS', 'INVERT', 
         'GRAYSCALE', 'SEPIA', 'NOISE', 'CROP', 'RESIZE', 'ROTATE', 
         'PATTERN'
