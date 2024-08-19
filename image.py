@@ -209,3 +209,64 @@ def main():
     stats = image_statistics(img)
     plot_image_statistics(stats, 'image_statistics.png')
 
+
+    noisy_image = add_noise_to_image(img)
+    noisy_image.save(f'{output_base_filename}_NOISY.png')
+
+    sepia_image = apply_sepia_filter(img)
+    sepia_image.save(f'{output_base_filename}_SEPIA.png')
+
+    grayscale_image = apply_grayscale_filter(img)
+    grayscale_image.save(f'{output_base_filename}_GRAYSCALE.png')
+
+    pattern_image = create_pattern_image(size=(200, 200))
+    pattern_image.save('pattern_image.png')
+
+    save_histogram(img, 'histogram.png')
+
+    generate_random_images(num_images=5, size=(100, 100))
+
+    contrast_stretched_image = apply_contrast_stretching(img)
+    contrast_stretched_image.save(f'{output_base_filename}_CONTRAST_STRETCHED.png')
+
+    thresholded_image = apply_thresholding(img)
+    thresholded_image.save(f'{output_base_filename}_THRESHOLDED.png')
+
+    blurred_image = blur_image(img)
+    blurred_image.save(f'{output_base_filename}_BLURRED.png')
+
+    rotated_image = rotate_image(img)
+    rotated_image.save(f'{output_base_filename}_ROTATED.png')
+
+    resized_image = resize_image(img)
+    resized_image.save(f'{output_base_filename}_RESIZED.png')
+
+    cropped_image = crop_image(img)
+    cropped_image.save(f'{output_base_filename}_CROPPED.png')
+
+    save_images(filtered_images, output_base_filename)
+    inverted_image.save(f'{output_base_filename}_INVERTED.png')
+    enhanced_image.save(f'{output_base_filename}_ENHANCED.png')
+
+    print(f"Images saved with base filename {output_base_filename}")
+
+    from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops
+
+def apply_effect(img, effect_name):
+    """Apply the chosen effect to the image."""
+    if effect_name == 'BLUR':
+        return img.filter(ImageFilter.BLUR)
+    elif effect_name == 'CONTOUR':
+        return img.filter(ImageFilter.CONTOUR)
+    elif effect_name == 'DETAIL':
+        return img.filter(ImageFilter.DETAIL)
+    elif effect_name == 'EDGE_ENHANCE':
+        return img.filter(ImageFilter.EDGE_ENHANCE)
+    elif effect_name == 'EMBOSS':
+        return img.filter(ImageFilter.EMBOSS)
+    elif effect_name == 'SHARPEN':
+        return img.filter(ImageFilter.SHARPEN)
+    elif effect_name == 'SMOOTH':
+        return img.filter(ImageFilter.SMOOTH)
+    elif effect_name == 'SMOOTH_MORE':
+        return img.filter(ImageFilter.SMOOTH_MORE)
