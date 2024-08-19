@@ -150,3 +150,62 @@ def save_histogram(img, filename='histogram.png'):
     plt.legend()
     plt.savefig(filename)
     plt.close()
+
+
+def generate_random_images(num_images=10, size=(100, 100)):
+    """Generate a number of random images."""
+    for i in range(num_images):
+        img = create_random_image(size)
+        img.save(f'random_image_{i}.png')
+
+def apply_contrast_stretching(img):
+    """Apply contrast stretching to an image."""
+    np_img = np.array(img)
+    min_val = np_img.min()
+    max_val = np_img.max()
+    stretched_img = ((np_img - min_val) / (max_val - min_val) * 255).astype('uint8')
+    return Image.fromarray(stretched_img, 'RGB')
+
+def apply_thresholding(img, threshold=128):
+    """Apply a simple thresholding to an image."""
+    np_img = np.array(img.convert('L'))
+    binary_img = (np_img > threshold) * 255
+    return Image.fromarray(binary_img.astype('uint8'), 'L')
+
+def blur_image(img, radius=5):
+    """Apply a Gaussian blur to an image."""
+    return img.filter(ImageFilter.GaussianBlur(radius))
+
+def rotate_image(img, angle=45):
+    """Rotate an image by a given angle."""
+    return img.rotate(angle, expand=True)
+
+def resize_image(img, size=(200, 200)):
+    """Resize an image to the given size."""
+    return img.resize(size)
+
+def crop_image(img, box=(50, 50, 150, 150)):
+    """Crop an image using the given box."""
+    return img.crop(box)
+
+def main():
+    input_image_path = 'image.jpg'
+    output_base_filename = 'output_image'
+
+    try:
+        img = Image.open(input_image_path)
+    except FileNotFoundError:
+        print(f"File {input_image_path} not found.")
+        return
+
+    filtered_images = apply_filters(img)
+    enhanced_image = enhance_image(img)
+    inverted_image = invert_image(img)
+    
+    # New functionalities
+    random_image = create_random_image(size=(200, 200))
+    random_image.save('random_image.png')
+
+    stats = image_statistics(img)
+    plot_image_statistics(stats, 'image_statistics.png')
+
