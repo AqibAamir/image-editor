@@ -270,3 +270,80 @@ def apply_effect(img, effect_name):
         return img.filter(ImageFilter.SMOOTH)
     elif effect_name == 'SMOOTH_MORE':
         return img.filter(ImageFilter.SMOOTH_MORE)
+
+elif effect_name == 'ENHANCE_COLOR':
+        enhancer = ImageEnhance.Color(img)
+        return enhancer.enhance(1.5)
+    elif effect_name == 'ENHANCE_CONTRAST':
+        enhancer = ImageEnhance.Contrast(img)
+        return enhancer.enhance(1.5)
+    elif effect_name == 'ENHANCE_BRIGHTNESS':
+        enhancer = ImageEnhance.Brightness(img)
+        return enhancer.enhance(1.2)
+    elif effect_name == 'INVERT':
+        return invert_image(img)
+    elif effect_name == 'GRAYSCALE':
+        return img.convert('L')
+    elif effect_name == 'SEPIA':
+        return apply_sepia_filter(img)
+    elif effect_name == 'NOISE':
+        return add_noise_to_image(img)
+    elif effect_name == 'CROP':
+        return crop_image(img)
+    elif effect_name == 'RESIZE':
+        return resize_image(img)
+    elif effect_name == 'ROTATE':
+        return rotate_image(img)
+    elif effect_name == 'PATTERN':
+        return create_pattern_image(size=(200, 200))
+    else:
+        print("Effect not recognized. No changes made.")
+        return img
+
+def choose_effect():
+    """Ask the user to choose an effect and apply it."""
+    effects = [
+        'BLUR', 'CONTOUR', 'DETAIL', 'EDGE_ENHANCE', 'EMBOSS', 
+        'SHARPEN', 'SMOOTH', 'SMOOTH_MORE', 'ENHANCE_COLOR', 
+        'ENHANCE_CONTRAST', 'ENHANCE_BRIGHTNESS', 'INVERT', 
+        'GRAYSCALE', 'SEPIA', 'NOISE', 'CROP', 'RESIZE', 'ROTATE', 
+        'PATTERN'
+    ]
+
+    print("Available effects:")
+    for idx, effect in enumerate(effects, start=1):
+        print(f"{idx}. {effect}")
+
+    try:
+        choice = int(input("Enter the number of the effect you want to apply: "))
+        if 1 <= choice <= len(effects):
+            effect_name = effects[choice - 1]
+            return effect_name
+        else:
+            print("Invalid choice. No effect will be applied.")
+            return None
+    except ValueError:
+        print("Invalid input. No effect will be applied.")
+        return None
+
+def main():
+    input_image_path = 'image.jpg'
+    output_base_filename = 'output_image'
+
+    try:
+        img = Image.open(input_image_path)
+    except FileNotFoundError:
+        print(f"File {input_image_path} not found.")
+        return
+
+    effect_name = choose_effect()
+    if effect_name:
+        img_with_effect = apply_effect(img, effect_name)
+        img_with_effect.save(f'{output_base_filename}_{effect_name}.png')
+        print(f"Image with {effect_name} effect saved as {output_base_filename}_{effect_name}.png")
+
+if __name__ == "__main__":
+    main()
+
+
+
